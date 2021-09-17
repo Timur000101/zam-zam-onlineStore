@@ -1,0 +1,176 @@
+.detail__content {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 30px;
+}
+
+.detail__slider {
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  width: 700px;
+}
+
+.gallery-top {
+  height: 80%;
+  width: 100%;
+  .swiper-slide {
+    background: rgba($color: #000000, $alpha: .8);
+    width: 100%!important;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+.gallery-thumbs {
+  height: 15%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 0;
+  margin-top: 20px;
+}
+
+.gallery-thumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+  border: 1px solid #E4E4E4;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.gallery-thumbs .swiper-slide-active {
+  border: 1.5px solid #1f96f4;
+  opacity: 1;
+}
+
+
+.detail__info {
+  max-width: 300px;
+  margin-left: 15px;
+  padding: 15px 10px;
+  border: 1px solid #E4E4E4;
+}
+
+.detail__info-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .detail__price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    h4 {
+      font-size: 32px;
+      font-weight: 500;
+      color: #414141;
+    }
+    span {
+      color: #ed4f00;
+      text-decoration: line-through;
+    }
+  }
+  span {
+    font-weight: 500;
+  }
+}
+
+.detail__info-content {
+  margin-top: 20px;
+  .detail__desc {
+    font-size: 16px;
+    color: #484848;
+    line-height: 22px;
+  }
+  .detail_available {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    span {
+      color: #1f96f4;
+      font-size: 17px;
+    }
+    img {
+      width: 15px;
+      height: 15px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.detail__counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #E4E4E4;
+  width: 100%;
+  height: 50px;
+  margin-top: 15px;
+  span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .minus {
+    flex: 0 0 80px;
+    height: 100%;
+    background: none;
+    border-right: 1px solid #E4E4E4;
+  }
+  .plus {
+    flex: 0 0 80px;
+    height: 100%;
+    background: none;
+    border-left: 1px solid #E4E4E4;
+  }
+}
+
+.detail__btn {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.detail__similar {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  &-title {
+    h2 {
+      font-size: 28px;
+    }
+  }
+  &-items {
+    display: flex;
+    margin-top: 20px;
+  }
+  &-item {
+    padding: 5px;
+    max-width: 250px;
+    border: 1px solid #E4E4E4;
+    img {
+      width: 100%;
+      height: 250px;
+    }
+    h4 {
+      margin-top: 5px;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 500;
+      color: #414141;
+      margin-top: 10px;
+    }
+    .detail__similar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      width: 100%;
+    }
+  }
+}
