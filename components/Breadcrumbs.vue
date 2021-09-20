@@ -38,6 +38,7 @@ export default {
 @import "@/assets/styles/main.scss";
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 30px;
   &__pages {

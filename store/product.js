@@ -3,7 +3,8 @@ export const state = () => ({
   products: [],
   brands: [],
   productsInCart: [],
-  newProducts: []
+  newProducts: [],
+  popularProducts: []
 })
 
 export const mutations = {
@@ -52,6 +53,9 @@ export const mutations = {
   },
   SET_NEW_PRODUCTS(state, newProducts) {
     state.newProducts = newProducts
+  },
+  SET_POPULAR_PRODUCTS(state, popularProducts) {
+    state.popularProducts = popularProducts
   }
 }
 
@@ -94,10 +98,27 @@ export const actions = {
     await this.$axios
     .get('http://167.99.131.142/product/new/')
     .then(res => {
-      console.log(res.data);
       newProducts = res.data
     })
     commit("SET_NEW_PRODUCTS", newProducts)
+  },
+  async fetchPopularProducts({ commit }) {
+    let popularProducts;
+    await this.$axios
+    .get('http://167.99.131.142/product/rec/')
+    .then(res => {
+      popularProducts = res.data
+    })
+    commit("SET_POPULAR_PRODUCTS", popularProducts)
+  },
+  async fetchPopulation({ commit }, id) {
+    await this.$axios
+    .post('http://167.99.131.142/product/rec/', {
+      id: id
+    })
+    .then(res => {
+      console.log(res);
+    })
   },
   addToCart({ commit }, card) {
     commit("ADD_TO_CART", card);
@@ -127,5 +148,6 @@ export const getters = {
   brands: state => state.brands,
   products: state => state.products,
   productsInCart: s => s.productsInCart,
-  newProducts: s => s.newProducts
+  newProducts: s => s.newProducts,
+  popularProducts: s => s.popularProducts
 }

@@ -128,6 +128,38 @@
         </div>
       </div>
     </section>
+
+    <section class="section popular">
+      <div class="container">
+        <div class="popular__wrapper">
+          <div class="section__title">
+            <h4>Самые популярные игрушки</h4>
+          </div>
+          <div class="popular__items">
+            <div 
+              v-for="item in popularProducts"
+              :key="item.id"
+              class="popular__item"
+            >
+              <div v-if="item.sale != 0" class="popular__item-discount">
+                <span class="discount-value">
+                  -{{ item.sale }}%
+                </span>
+              </div>
+              <img :src="item.product_image[0].image" :alt="item.product_image[0]">
+              <div class="popular__item-content">
+                <span>арт. {{ item.article }}</span>
+                <h4>{{ item.name }}</h4>
+              </div>
+              <!-- <h3>{{ numberWithCommas(item.price) }}</h3> -->
+              <nuxt-link tag="button" :to="'/catalog/' + item.id" class="btn popular__button">
+                Перейти
+              </nuxt-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -153,10 +185,14 @@ export default {
     },
     newProducts() {
       return this.$store.getters["product/newProducts"]
+    },
+    popularProducts() {
+      return this.$store.getters["product/popularProducts"]
     }
   },
   mounted() {
-    this.$store.dispatch("product/fetchNewProducts")
+    this.$store.dispatch("product/fetchNewProducts"),
+    this.$store.dispatch("product/fetchPopularProducts")
   },
   methods: {
     toDetailProduct(id) {
