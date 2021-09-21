@@ -119,42 +119,44 @@
           </div>
 
           <div class="catalog__items">
-            <div v-for="(item, index) in products" :key="index" class="catalog__item">
-              <div class="catalog__item-wrapper">
-                <div v-if="item.sale != 0" class="product-discount">
-                  <span class="discount-value">
-                    -{{ item.sale }}%
-                  </span>
-                </div>
-                <div class="catalog__item-image" @click="toDetailToy(item.id)">
-                  <img :src="item.product_image[0].image" alt="">
-                </div>
-                <div class="catalog__item-content">
-                  <div class="catalog__item-title" @click="toDetailToy(item.id)">
-                    <h4>{{ item.name }}</h4>
+            <div class="catalog__items-wrapper">
+              <div v-for="(item, index) in products.results" :key="index" class="catalog__item">
+                <div class="catalog__item-wrapper">
+                  <div v-if="item.sale != 0" class="product-discount">
+                    <span class="discount-value">
+                      -{{ item.sale }}%
+                    </span>
                   </div>
-                  <div class="catalog__item-price">
-                    <span v-if="item.sale != 0">{{ numberWithCommas(item.price) }}</span>
-                    <h4 v-if="item.sale == 0">{{ numberWithCommas(item.price) }}</h4>
-                    <h4 v-else>{{ numberWithCommas(item.sale_price) }}</h4>
+                  <div class="catalog__item-image" @click="toDetailToy(item.id)">
+                    <img :src="item.product_image[0].image" alt="">
                   </div>
-                </div>
-                <div class="catalog__item-btn">
-                  <button
-                    v-if="item.available"
-                    @click="addToCart(item)"
-                    class="btn catalog-btn"
-                  >
-                    <span v-if="checkProductsInCart(item) || checkProductsIdInCart(item)">Уже в корзине</span>
-                    <span v-else>В корзину</span>
-                  </button>
-                  <button
-                    v-else
-                    style="background: rgb(134 134 134);"
-                    class="btn catalog-btn"
-                  >
-                    <span>Нет в наличии</span>
-                  </button>
+                  <div class="catalog__item-content">
+                    <div class="catalog__item-title" @click="toDetailToy(item.id)">
+                      <h4>{{ item.name }}</h4>
+                    </div>
+                    <div class="catalog__item-price">
+                      <span v-if="item.sale != 0">{{ $numberWithCommas(item.price) }}</span>
+                      <h4 v-if="item.sale == 0">{{ $numberWithCommas(item.price) }}</h4>
+                      <h4 v-else>{{ $numberWithCommas(item.sale_price) }}</h4>
+                    </div>
+                  </div>
+                  <div class="catalog__item-btn">
+                    <button
+                      v-if="item.available"
+                      @click="addToCart(item)"
+                      class="btn catalog-btn"
+                    >
+                      <span v-if="checkProductsInCart(item) || checkProductsIdInCart(item)">Уже в корзине</span>
+                      <span v-else>В корзину</span>
+                    </button>
+                    <button
+                      v-else
+                      style="background: rgb(134 134 134);"
+                      class="btn catalog-btn"
+                    >
+                      <span>Нет в наличии</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -260,11 +262,13 @@ export default {
       checkedCategories: this.$route.query.category ? (this.$route.query.category).split(',') : [],
       checkedBrands: this.$route.query.brand ? (this.$route.query.brand).split(',') : [],
       checkedAge: this.$route.query.age ? (this.$route.query.age).split(',') : [],
+      genderType: this.$route.query.gender ? this.$route.query.gender : '',
       productsInCartId: [],
       queryParams: {
         category: this.$route.query.category ? (this.$route.query.category).split(',') : '',
         brand: this.$route.query.brand ? (this.$route.query.brand).split(',') : '',
-        age: this.$route.query.brand ? (this.$route.query.age).split(',') : ''
+        age: this.$route.query.age ? (this.$route.query.age).split(',') : '',
+        gender: this.$route.query.gender ? this.$route.query.gender : '',
       },
       sortTypes: [
         { id: 1, value: 'sortByPriceUp', text: 'По росту цены' },
@@ -289,7 +293,6 @@ export default {
         { name: 'Главная', url: '/' }
       ],
       sorteType: '',
-      genderType: '',
       showMobileFilter: false
     }
   },
@@ -302,22 +305,19 @@ export default {
       deep: true
     },
     checkedCategories: function() {
-      let body = document.querySelector('body')
-      body.classList.toggle('body-overflow')
+      this.checkMobileFormat()
       let categories = this.checkedCategories.join(',')
       this.queryParams.category = categories
       this.showMobileFilter = false
     },
     checkedBrands: function() {
-      let body = document.querySelector('body')
-      body.classList.toggle('body-overflow')
+      this.checkMobileFormat()
       let brands = this.checkedBrands.join(',')
       this.queryParams.brand = brands
       this.showMobileFilter = false
     },
     checkedAge: function() {
-      let body = document.querySelector('body')
-      body.classList.toggle('body-overflow')
+      this.checkMobileFormat()
       let ages = this.checkedAge.join(',')
       this.queryParams.age = ages
       this.showMobileFilter = false
@@ -330,11 +330,7 @@ export default {
       }
     },
     genderType: function(el) {
-      if (el == "" && el !== 0) {
-        this.$store.dispatch("product/fetchProducts")
-      } else {
-        this.$store.dispatch("product/fetchProducts", { gender: el })
-      }
+      this.queryParams.gender = el
     }
 
   },
@@ -390,13 +386,10 @@ export default {
     toDetailToy(id) {
       this.$router.push(`/catalog/${id}`)
     },
-    numberWithCommas: function(x) {
-      if (x) {
-        var parts = x.toString().split(" ");
-        parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g," ");
-        return parts.join(",") + ' тг';
-      } else {
-        return;
+    checkMobileFormat() {
+      if(window.matchMedia('(max-width: 790px)').matches){
+        let body = document.querySelector('body')
+        body.classList.toggle('body-overflow')
       }
     }
   }

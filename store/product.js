@@ -16,6 +16,7 @@ export const mutations = {
   },
   SET_PRODUCTS(state, products) {
     state.products = products;
+    state.products.results = products.results.reverse()
   },
   ADD_TO_CART(state, card) {
     state.productsInCart.push(card)
@@ -28,28 +29,29 @@ export const mutations = {
     state.productsInCart = [];
   },
   SORT_BY_PRICE_DOWN(state) {
-    const products = state.products.sort((a, b) => a.price - b.price).reverse();
-    state.products = products;
+    console.log(state.products.results);
+    const products = state.products.results.sort((a, b) => a.price - b.price).reverse();
+    state.products.results = products;
   },
   SORT_BY_PRICE_UP(state) {
-    const products = state.products.sort((a, b) => a.price - b.price);
-    state.products = products;
+    const products = state.products.results.sort((a, b) => a.price - b.price);
+    state.products.results = products;
   },
   SORT_BY_NEW(state) {
-    const products = state.products.sort((a, b) => {
+    const products = state.products.results.sort((a, b) => {
       let da = new Date(a.created).getTime();
       let db = new Date(b.created).getTime();
       return (da < db) ? 1 : (da > db) ? -1 : 0
     })
-    state.products = products;
+    state.products.results = products;
   },
   SORT_BY_DISCOUNT(state) {
-    const products = state.products.sort((a, b) => {
+    const products = state.products.results.sort((a, b) => {
       let sa = a.sale;
       let sb = b.sale;
       return (sa < sb) ? 1 : (sa > sb) ? -1 : 0
     })
-    state.products = products;
+    state.products.results = products;
   },
   SET_NEW_PRODUCTS(state, newProducts) {
     state.newProducts = newProducts
@@ -89,7 +91,7 @@ export const actions = {
     await this.$axios
     .get("http://167.99.131.142/product/", {params: payload})
     .then(res => {
-      products = res.data.results;
+      products = res.data;
     })
     commit("SET_PRODUCTS", products)
   },
@@ -111,13 +113,10 @@ export const actions = {
     })
     commit("SET_POPULAR_PRODUCTS", popularProducts)
   },
-  async fetchPopulation({ commit }, id) {
-    await this.$axios
+  fetchPopulation({ commit }, id) {
+    return this.$axios
     .post('http://167.99.131.142/product/rec/', {
       id: id
-    })
-    .then(res => {
-      console.log(res);
     })
   },
   addToCart({ commit }, card) {

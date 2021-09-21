@@ -92,6 +92,7 @@
         </div>
       </div>
     </div>
+    <Toast :is_active="is_active" />
   </section>
 </template>
 
@@ -99,11 +100,14 @@
 import axios from "axios"
 export default {
   components: {
-    Breadcrumbs: () => import('@/components/Breadcrumbs.vue')
+    Breadcrumbs: () => import('@/components/Breadcrumbs.vue'),
+    Toast: () => import('@/components/Toast.vue')
   },
   data() {
     return {
       count: 1,
+      is_active: false,
+      productsInCartId: [],
       similarProducts: [],
       swiperOptions: {
         pagination: {
@@ -140,7 +144,6 @@ export default {
     }
   },
   asyncData ({ route }) {
-    let self = this
     return axios.get('http://167.99.131.142/product/')
       .then(res => {
         let product = res.data.results.filter(el => {
@@ -171,15 +174,25 @@ export default {
       swiperTop.controller.control = swiperThumbs
       swiperThumbs.controller.control = swiperTop
     })
-    // if (this.productsInCart.length) {
-    //   this.productsInCart.forEach((c) => this.productsInCartId.push(c.id));
-    // }
+    if (this.productsInCart.length) {
+      this.productsInCart.forEach((c) => this.productsInCartId.push(c.id));
+    }
   },
   methods: {
     async addToCart(card, count) {
       card.count = count
       if(this.productsInCart.find(f => f.id == card.id) === undefined) {
+        this.is_active = true;
         await this.$store.dispatch("product/addToCart", card)
+        await this.$store.dispatch("product/fetchPopulation", card.id)
+        .then((res) => {
+          setTimeout(() => {
+            if (res.data.status == "success")
+              this.is_active = false;
+            else
+              return;
+          }, 1000)
+        })
       } else {
         await this.$store.dispatch("product/deleteFromCart", card)
         this.productsInCartId = this.productsInCartId.filter(

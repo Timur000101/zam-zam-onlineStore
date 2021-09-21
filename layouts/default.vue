@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <nuxt />
+    <nuxt style="margin-top: 80px;" />
     <Footer />
   </div>
 </template>
