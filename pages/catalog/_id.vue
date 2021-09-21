@@ -68,6 +68,18 @@
                 <button style="background: rgb(134 134 134);" class="btn detail__btn">Нет в наличии</button>
               </div>
             </template>
+            <div class="detail__delivery">
+              <div class="detail__delivery-item">
+                <img src="@/assets/images/icons/shop.svg" alt="Самовывоз">
+                <p>Самовывоз</p>
+                <span>Бесплатно</span>
+              </div>
+              <div class="detail__delivery-item">
+                <img src="@/assets/images/icons/delivery.svg" alt="Самовывоз">
+                <p>Доставка по городу</p>
+                <span>от 300 тг</span>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -29,7 +29,7 @@
               <nuxt-link to="/catalog?gender=0">Девочкам</nuxt-link>
             </li>
             <li class="main__menu-item">
-              <nuxt-link to="/">Возраст</nuxt-link>
+              <a href="#age">Возраст</a>
             </li>
           </ul>
         </div>
@@ -118,7 +118,7 @@
       </div>
     </section>
 
-    <section class="section age">
+    <section id="age" class="section age">
       <div class="container">
         <div class="age__wrapper">
           <div class="section__title">
@@ -224,6 +224,10 @@ export default {
     return {
       swiperOptions: {
         loop: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
+        },
         pagination: {
           el: '.swiper-pagination'
         },

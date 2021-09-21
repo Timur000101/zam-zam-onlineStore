@@ -4,14 +4,14 @@ export default {
     fallback: true
   },
   head: {
-    title: 'zam-zam',
+    title: 'ИГРУШКИ КАРАГАНДА Zam-Zam',
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'Zam-zam порадует детей игрушками, а родителей ценами' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
@@ -31,7 +31,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/swiper.js' },
-    { src: '~/plugins/functions.js' }
+    { src: '~/plugins/functions.js' },
+    { src: '~/plugins/vuelidate.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -114,6 +114,155 @@
                   ></div>
                 </div>
               </div>
+              <div class="cart__form">
+                <div class="form--title">
+                  <h1>Оформить заказ</h1>
+                </div>
+                <div class="delivery__form-type">
+                  <div class="delivery__form-type-item">
+                    <input
+                      id="legal"
+                      class="form--radio" 
+                      type="radio" 
+                      name="action" 
+                      value="legal"
+                      v-model="delivery__type"
+                      checked
+                    >
+                    <label for="legal">Доставка</label>
+                  </div>
+                  <div class="delivery__form-type-item">
+                    <input
+                      id="fiz"
+                      class="form--radio" 
+                      type="radio" 
+                      name="action" 
+                      value="fiz"
+                      v-model="delivery__type"
+                    >
+                    <label for="fiz">Самовывоз</label>
+                  </div>
+                </div>
+                <template v-if="delivery__type == 'legal'">
+                  <form @submit.prevent="sendWithDelivery">
+                    <div id="name" class="form--group">
+                      <input
+                        placeholder="Имя" 
+                        type="text"
+                        v-model="$v.form.name.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form.name.$error }"
+                      >
+                    </div>
+                    <div id="name" class="form--error">
+                      <span v-if="!$v.form.name.required && $v.form.name.$dirty">Обязательное поле</span>
+                    </div>
+                    <div id="phone" class="form--group">
+                      <div class="phone__formater">
+                        +7
+                      </div>
+                      <input
+                        placeholder="Телефон" 
+                        type="text"
+                        v-model="$v.form.phone.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form.phone.$error }"
+                        style="border-radius: 0 4px 4px 0;"
+                      >
+                    </div>
+                    <div id="phone" class="form--error">
+                      <span v-if="!$v.form.phone.required && $v.form.phone.$dirty">Обязательное поле</span>
+                    </div>
+                    <div id="address" class="form--group">
+                      <input
+                        placeholder="Адрес" 
+                        type="text"
+                        v-model="$v.form.address.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form.address.$error }"
+                      >
+                    </div>
+                    <div id="address" class="form--error">
+                      <span v-if="!$v.form.address.required && $v.form.address.$dirty">Обязательное поле</span>
+                    </div>
+                    <div id="entrance" class="form--group">
+                      <input
+                        placeholder="Подъезд" 
+                        type="text"
+                        v-model="$v.form.entrance.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form.entrance.$error }"
+                      >
+                    </div>
+                    <div id="entrance" class="form--error">
+                      <span v-if="!$v.form.entrance.maxLength && $v.form.entrance.$dirty">Введите корректные данные</span>
+                    </div>
+                    <div id="floor" class="form--group">
+                      <input
+                        placeholder="Этаж" 
+                        type="text"
+                        v-model="$v.form.floor.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form.floor.$error }"
+                      >
+                    </div>
+                    <div id="floor" class="form--error">
+                      <span v-if="!$v.form.floor.maxLength && $v.form.floor.$dirty">Введите корректные данные</span>
+                    </div>
+
+                    <div id="intercom" class="form--group">
+                      <input
+                        placeholder="Домофон" 
+                        type="text"
+                        v-model="$v.form.intercom.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form.intercom.$error }"
+                      >
+                    </div>
+                    <div id="intercom" class="form--error">
+                      <span v-if="!$v.form.intercom.maxLength && $v.form.intercom.$dirty">Введите корректные данные</span>
+                    </div>
+                    <div class="form--group delivery-btn--group">
+                      <button type="submit" class="form--btn">
+                        Оформить заказ
+                      </button>
+                    </div>
+                  </form>
+                </template>
+                <template v-else>
+                  <form>
+                    <div id="name" class="form--group">
+                      <input
+                        placeholder="Имя" 
+                        type="text"
+                        v-model="$v.form2.name.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form2.name.$error }"
+                      >
+                    </div>
+                    <div id="name" class="form--error">
+                      <span v-if="!$v.form2.name.required && $v.form2.name.$dirty">Обязательное поле</span>
+                    </div>
+                    <div id="phone" class="form--group">
+                      <input
+                        placeholder="Телефон" 
+                        type="text"
+                        v-model="$v.form2.phone.$model"
+                        class="form--input"
+                        :class="{ 'form-group--error': $v.form2.phone.$error }"
+                      >
+                    </div>
+                    <div id="phone" class="form--error">
+                      <span v-if="!$v.form2.phone.required && $v.form2.phone.$dirty">Обязательное поле</span>
+                    </div>
+                    <div class="form--group delivery-btn--group">
+                      <button type="submit" class="form--btn">
+                        Оформить заказ
+                      </button>
+                    </div>
+                  </form>
+                </template>
+              </div>
             </div>
           </div>
         </div>
@@ -133,6 +282,8 @@
 </template>
 
 <script>
+import axios from "axios"
+import { required, maxLength } from "vuelidate/lib/validators";
 export default {
   components: {
     Toast: () => import("@/components/Toast.vue")
@@ -140,7 +291,50 @@ export default {
   data() {
     return {
       cartActive: false,
-      purchaseOk: false
+      purchaseOk: false,
+      delivery__type: "legal",
+      form: {
+        name: null,
+        phone: null,
+        address: null,
+        entrance: null,
+        floor: null,
+        intercom: null
+      },
+      form2: {
+        name: null,
+        phone: null,
+      }
+    }
+  },
+  validations: {
+    form: {
+      name: {
+        required
+      },
+      phone: {
+        required
+      },
+      address: {
+        required
+      },
+      entrance: {
+        maxLength: maxLength(4)
+      },
+      floor: {
+        maxLength: maxLength(4)
+      },
+      intercom: {
+        maxLength: maxLength(4)
+      }
+    },
+    form2: {
+      name: {
+        required
+      },
+      phone: {
+        required
+      }
     }
   },
   computed: {
@@ -162,6 +356,39 @@ export default {
     },
     toCart() {
       this.cartActive = true;
+    },
+    sendWithDelivery() {
+      this.$v.form.$touch()
+      if (this.$v.form.$error) {
+        console.log("Error");
+      } else {
+        let products = {}
+        this.productsInCart.forEach(item => {
+          products.name = item.name
+        })
+        // 1962515098:AAFPmcFfMqHD6KG3X44OVUtt00oUuyYON-4
+        axios.post('https://api.telegram.org/bot1962515098:AAFPmcFfMqHD6KG3X44OVUtt00oUuyYON-4/sendMessage', {
+          chat_id: 456418386,
+          parse_mode: 'HTML',
+          text: `
+            Клиент: <strong>${this.form.name}.</strong>\n
+            Телефон: <strong>${this.form.phone}.</strong>\n
+            Адрес: ${this.form.address} / подъезд: ${this.form.entrance} /этаж: ${this.form.floor} /домофон: ${this.form.intercom}\n
+            Toвары: [
+              ${products}
+            ]
+          `
+        })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        console.log(this.form, this.productsInCart);
+        console.log("Success");
+        
+      }
     }
   },
   mounted() {
@@ -199,6 +426,7 @@ export default {
   -webkit-box-shadow: 0px -4px 12px 4px rgba(32, 68, 96, 0.22);
   -moz-box-shadow: 0px -4px 12px 4px rgba(32, 68, 96, 0.22);
   box-shadow: 0px -4px 12px 4px rgba(32, 68, 96, 0.22);
+  cursor: pointer;
   &__body {
     display: flex;
     justify-content: center;
