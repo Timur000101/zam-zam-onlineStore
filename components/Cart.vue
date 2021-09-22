@@ -362,22 +362,26 @@ export default {
       if (this.$v.form.$error) {
         console.log("Error");
       } else {
-        let products = {}
+        let products = ''
+        let number = 1
         this.productsInCart.forEach(item => {
-          products.name = item.name
+          products += '"' + `[${number}] ` +item.name + ', количество: ' + item.count + '"\n'
+          number++
         })
-        // 1962515098:AAFPmcFfMqHD6KG3X44OVUtt00oUuyYON-4
         axios.post('https://api.telegram.org/bot1962515098:AAFPmcFfMqHD6KG3X44OVUtt00oUuyYON-4/sendMessage', {
           chat_id: 456418386,
           parse_mode: 'HTML',
-          text: `
-            Клиент: <strong>${this.form.name}.</strong>\n
-            Телефон: <strong>${this.form.phone}.</strong>\n
-            Адрес: ${this.form.address} / подъезд: ${this.form.entrance} /этаж: ${this.form.floor} /домофон: ${this.form.intercom}\n
-            Toвары: [
-              ${products}
-            ]
-          `
+          text: 'Клиент: <strong>'+`${this.form.name}` + '</strong>\n'+
+          'Телефон: <strong>' + `${this.form.phone}` + '</strong>\n'+
+          'Адрес: <strong>' + `${this.form.address}` + '</strong>\n'+
+          'Подъезд: <strong>' + `${this.form.entrance}` + '</strong>\n'+
+          'Этаж: <strong>' + `${this.form.floor}` + '</strong>\n'+
+          'Домофон: <strong>' + `${this.form.floor}` + '</strong>\n'+
+          'Товары: [\n <pre>' + `${products}`+ '</pre> ]'
+            // Адрес: ${this.form.address} / подъезд: ${this.form.entrance} /этаж: ${this.form.floor} /домофон: ${this.form.intercom}\n
+            // Toвары: [
+            //   ${products}
+            // ]
         })
         .then(res => {
           console.log(res);

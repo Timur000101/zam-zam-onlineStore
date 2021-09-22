@@ -487,6 +487,7 @@ button {cursor: pointer; border: none;}
   &-container {
     height: 100vh;
     padding: 20px 10px;
+    width: 100%;
   }
 }
 
@@ -866,6 +867,82 @@ button {cursor: pointer; border: none;}
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+  }
+}
+
+
+// Pagination 
+.pagination-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+  width: 100%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.page-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  margin: 0 4px;
+  a {
+    color: #424242;
+    font-weight: 500;
+  }
+}
+
+.page-item.active {
+  background: #1f96f4;
+  border-radius: 5px;
+  color: #fff;
+  a {
+    color: #fff;
+  }
+}
+
+.prev-item {
+  display: flex;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  background: #d6d6d6;
+  justify-content: center;
+  align-items: center;
+  color: #BBBBC2;
+  font-size: 20px;
+  border-radius: 5px;
+  a {
+    color: $text-color;
+  }
+}
+
+.next-item {
+  display: flex;
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
+  background: #d6d6d6;
+  justify-content: center;
+  align-items: center;
+  color: #BBBBC2;
+  font-size: 20px;
+  border-radius: 5px;
+  a {
+    color: $text-color;
+  }
+}
+
+
+@media (max-width: 445px) {
+  .pagination {
     width: 100%;
   }
 }

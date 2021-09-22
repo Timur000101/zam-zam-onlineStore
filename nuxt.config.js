@@ -32,7 +32,8 @@ export default {
   plugins: [
     { src: '~/plugins/swiper.js' },
     { src: '~/plugins/functions.js' },
-    { src: '~/plugins/vuelidate.js' }
+    { src: '~/plugins/vuelidate.js' },
+    { src: '~/plugins/paginate.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -60,5 +61,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ['paginate']
   }
 }

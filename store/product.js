@@ -65,7 +65,7 @@ export const actions = {
   async fetchCategories({ commit }) {
     let categories;
     await this.$axios
-    .get("http://167.99.131.142/category/")
+    .get("https://back.zam-zam.kz/category/")
     .then(res => {
       res.data.map(el => {
         el.isChecked = false
@@ -77,7 +77,7 @@ export const actions = {
   async fetchBrands({ commit }) {
     let brands;
     await this.$axios
-    .get("http://167.99.131.142/product/brands/")
+    .get("https://back.zam-zam.kz/product/brands/")
     .then(res => {
       res.data.map(el => {
         el.isChecked = false
@@ -89,7 +89,7 @@ export const actions = {
   async fetchProducts({ commit }, payload) {
     let products;
     await this.$axios
-    .get("http://167.99.131.142/product/", {params: payload})
+    .get("https://back.zam-zam.kz/product/", {params: payload})
     .then(res => {
       products = res.data;
     })
@@ -98,7 +98,7 @@ export const actions = {
   async fetchNewProducts({ commit }) {
     let newProducts;
     await this.$axios
-    .get('http://167.99.131.142/product/new/')
+    .get('https://back.zam-zam.kz/product/new/')
     .then(res => {
       newProducts = res.data
     })
@@ -107,7 +107,7 @@ export const actions = {
   async fetchPopularProducts({ commit }) {
     let popularProducts;
     await this.$axios
-    .get('http://167.99.131.142/product/rec/')
+    .get('https://back.zam-zam.kz/product/rec/')
     .then(res => {
       popularProducts = res.data
     })
@@ -115,7 +115,7 @@ export const actions = {
   },
   fetchPopulation({ commit }, id) {
     return this.$axios
-    .post('http://167.99.131.142/product/rec/', {
+    .post('https://back.zam-zam.kz/product/rec/', {
       id: id
     })
   },

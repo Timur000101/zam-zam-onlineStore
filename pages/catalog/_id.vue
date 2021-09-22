@@ -156,7 +156,7 @@ export default {
     }
   },
   asyncData ({ route }) {
-    return axios.get('http://167.99.131.142/product/')
+    return axios.get('https://back.zam-zam.kz/product/')
       .then(res => {
         let product = res.data.results.filter(el => {
           return el.id == route.params.id
@@ -170,7 +170,7 @@ export default {
     },
   },
   mounted() {
-    axios.post('http://167.99.131.142/product/similar/', {
+    axios.post('https://back.zam-zam.kz/product/similar/', {
       id: this.$route.params.id
     })
     .then(res => {

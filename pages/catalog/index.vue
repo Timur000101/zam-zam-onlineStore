@@ -160,6 +160,22 @@
                 </div>
               </div>
             </div>
+            <div class="pagination-section">
+              <paginate
+                v-model="page"
+                :click-handler="pageChange"
+                :page-count="20"
+                :prev-text="'<'"
+                :next-text="'>'"
+                :page-range="2"
+                :hide-prev-next="true"
+                :container-class="'pagination'"
+                :page-class="'page-item'"
+                :prev-class="'prev-item'"
+                :next-class="'next-item'"
+              >
+              </paginate>
+            </div>
           </div>
         </div>
       </div>
@@ -259,6 +275,7 @@ export default {
   },
   data() {
     return {
+      page: 1,
       checkedCategories: this.$route.query.category ? (this.$route.query.category).split(',') : [],
       checkedBrands: this.$route.query.brand ? (this.$route.query.brand).split(',') : [],
       checkedAge: this.$route.query.age ? (this.$route.query.age).split(',') : [],
@@ -391,6 +408,9 @@ export default {
         let body = document.querySelector('body')
         body.classList.toggle('body-overflow')
       }
+    },
+    pageChange(el) {
+      console.log(el);
     }
   }
 }
