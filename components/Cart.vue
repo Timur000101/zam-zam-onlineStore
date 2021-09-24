@@ -97,14 +97,19 @@
                     <h3 class="card__title">
                       {{ card.name }}
                     </h3>
-                    <template v-if="card.sale_price">
-                      <span class="card__price">
-                        {{ $numberWithCommas(card.sale_price) }}
-                      </span>
+                    <template v-if="card.sale != 0">
+                      <div style="display: flex; align-items: center; margin-top: 6px;">
+                        <span class="card__sale">
+                          {{ $numberWithCommas(card.sale_total_price) }}
+                        </span>
+                        <span style="margin-top: 0;" class="card__price">
+                          {{ $numberWithCommas(card.total_price) }} ({{ card.count }})
+                        </span>
+                      </div>
                     </template>
                     <template v-else>
                       <span class="card__price">
-                        {{ $numberWithCommas(card.price) }}
+                        {{ $numberWithCommas(card.total_price) }} ({{ card.count }})
                       </span>
                     </template>
                   </div>
@@ -144,7 +149,7 @@
                   </div>
                 </div>
                 <template v-if="delivery__type == 'legal'">
-                  <form @submit.prevent="sendWithDelivery">
+                  <form id="formDelivery" @submit.prevent="sendWithDelivery">
                     <div id="name" class="form--group">
                       <input
                         placeholder="Имя" 
@@ -168,10 +173,12 @@
                         class="form--input"
                         :class="{ 'form-group--error': $v.form.phone.$error }"
                         style="border-radius: 0 4px 4px 0;"
+                        maxlength="10"
                       >
                     </div>
                     <div id="phone" class="form--error">
                       <span v-if="!$v.form.phone.required && $v.form.phone.$dirty">Обязательное поле</span>
+                      <span v-if="!$v.form.phone.minLength && $v.form.phone.$dirty">Введите корректный номер телефона</span>
                     </div>
                     <div id="address" class="form--group">
                       <input
@@ -230,7 +237,7 @@
                   </form>
                 </template>
                 <template v-else>
-                  <form>
+                  <form id="formDelivery2" @submit.prevent="sendRequest">
                     <div id="name" class="form--group">
                       <input
                         placeholder="Имя" 
@@ -244,16 +251,22 @@
                       <span v-if="!$v.form2.name.required && $v.form2.name.$dirty">Обязательное поле</span>
                     </div>
                     <div id="phone" class="form--group">
+                      <div class="phone__formater">
+                        +7
+                      </div>
                       <input
                         placeholder="Телефон" 
                         type="text"
                         v-model="$v.form2.phone.$model"
                         class="form--input"
                         :class="{ 'form-group--error': $v.form2.phone.$error }"
+                        style="border-radius: 0 4px 4px 0;"
+                        maxlength="10"
                       >
                     </div>
                     <div id="phone" class="form--error">
                       <span v-if="!$v.form2.phone.required && $v.form2.phone.$dirty">Обязательное поле</span>
+                      <span v-if="!$v.form2.phone.minLength && $v.form2.phone.$dirty">Введите корректный номер телефона</span>
                     </div>
                     <div class="form--group delivery-btn--group">
                       <button type="submit" class="form--btn">
@@ -268,6 +281,7 @@
         </div>
       </div>
     </transition>
+    <SuccessModal @close="closeModal" :totalCount="totalCount" :showModal="showModal" />
     <div v-if="productsInCart.length" @click="toCart" class="toCart--toast">
       <div class="toCart--toast__body">
         <span>Перейти в корзину</span> 
@@ -283,16 +297,18 @@
 
 <script>
 import axios from "axios"
-import { required, maxLength } from "vuelidate/lib/validators";
+import { required, maxLength, minLength, numeric } from "vuelidate/lib/validators";
 export default {
   components: {
-    Toast: () => import("@/components/Toast.vue")
+    Toast: () => import("@/components/Toast.vue"),
+    SuccessModal: () => import("@/components/SuccessModal.vue")
   },
   data() {
     return {
       cartActive: false,
       purchaseOk: false,
       delivery__type: "legal",
+      showModal: false,
       form: {
         name: null,
         phone: null,
@@ -307,13 +323,25 @@ export default {
       }
     }
   },
+  watch: {
+    cartActive: function(el) {
+      let body = document.querySelector('body')
+      if (el == true) {
+        body.style.overflow = "hidden"
+      } else {
+        body.style.overflow = ""
+      }
+    }
+  },
   validations: {
     form: {
       name: {
         required
       },
       phone: {
-        required
+        required,
+        minLength: minLength(10),
+        numeric
       },
       address: {
         required
@@ -333,7 +361,9 @@ export default {
         required
       },
       phone: {
-        required
+        required,
+        minLength: minLength(10),
+        numeric
       }
     }
   },
@@ -341,6 +371,13 @@ export default {
     productsInCart() {
       return this.$store.getters["product/productsInCart"];
     },
+    totalCount() {
+      let total = 0
+      this.productsInCart.forEach(el => {
+        total += el.total_price
+      })
+      return total
+    }
   },
   methods: {
     async deleteFromCart(card) {
@@ -378,21 +415,50 @@ export default {
           'Этаж: <strong>' + `${this.form.floor}` + '</strong>\n'+
           'Домофон: <strong>' + `${this.form.floor}` + '</strong>\n'+
           'Товары: [\n <pre>' + `${products}`+ '</pre> ]'
-            // Адрес: ${this.form.address} / подъезд: ${this.form.entrance} /этаж: ${this.form.floor} /домофон: ${this.form.intercom}\n
-            // Toвары: [
-            //   ${products}
-            // ]
         })
-        .then(res => {
-          console.log(res);
+        .then(() => {
+          this.cartActive = false
+          this.showModal = true
+          document.getElementById('formDelivery').reset()
+          window.localStorage.clear();
         })
         .catch(err => {
           console.log(err);
         })
-        console.log(this.form, this.productsInCart);
-        console.log("Success");
-        
       }
+    },
+    sendRequest() {
+      this.$v.form2.$touch()
+      if (this.$v.form2.$error) {
+        console.log("Error");
+      } else {
+        let products = ''
+        let number = 1
+        this.productsInCart.forEach(item => {
+          products += '"' + `[${number}] ` +item.name + ', количество: ' + item.count + '"\n'
+          number++
+        })
+        axios.post('https://api.telegram.org/bot1962515098:AAFPmcFfMqHD6KG3X44OVUtt00oUuyYON-4/sendMessage', {
+          chat_id: 456418386,
+          parse_mode: 'HTML',
+          text: '<strong>Самовывоз!</strong>\n'+
+          'Клиент: <strong>'+`${this.form2.name}` + '</strong>\n'+
+          'Телефон: <strong>' + `${this.form2.phone}` + '</strong>\n'+
+          'Товары: [\n <pre>' + `${products}`+ '</pre> ]'
+        })
+        .then(() => {
+          this.cartActive = false
+          this.showModal = true
+          document.getElementById('formDelivery2').reset()
+          localStorage.clear()
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      }
+    },
+    closeModal() {
+      this.showModal = false
     }
   },
   mounted() {

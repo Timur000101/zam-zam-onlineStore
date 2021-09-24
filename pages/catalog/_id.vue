@@ -2,15 +2,15 @@
   <section class="section detail">
     <div class="container">
       <div class="detail__wrapper">
-        <Breadcrumbs :crumbs="breadcrumbs" :currentPage="product[0].name"/>
+        <Breadcrumbs :crumbs="breadcrumbs" :currentPage="product.name"/>
         <div class="detail__title">
-          <h1 class="section-title">{{ product[0].name }}</h1>
+          <h1 class="section-title">{{ product.name }}</h1>
         </div>
         <div class="detail__content">
           <div class="detail__slider">
             <swiper class="swiper gallery-top" :options="swiperOptions" ref="swiperTop">
               <swiper-slide
-                v-for="(item, index) in product[0].product_image" 
+                v-for="(item, index) in product.product_image" 
                 :key="index" 
               >
                 <img :src="item.image" alt="image">
@@ -22,7 +22,7 @@
 
             <swiper class="swiper gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
               <swiper-slide
-                v-for="(item, index) in product[0].product_image" 
+                v-for="(item, index) in product.product_image" 
                 :key="index" 
               >
                 <img :src="item.image" alt="image">
@@ -33,21 +33,21 @@
           <div class="detail__info">
             <div class="detail__info-title">
               <div class="detail__price">
-                <span v-if="product[0].sale != 0">{{ numberWithCommas(product[0].price) }}</span>
-                <h4 v-if="product[0].sale == 0">{{ numberWithCommas(product[0].price) }}</h4>
-                <h4 v-else>{{ numberWithCommas(product[0].sale_price) }}</h4>
+                <span v-if="product.sale != 0">{{ numberWithCommas(product.price) }}</span>
+                <h4 v-if="product.sale == 0">{{ numberWithCommas(product.price) }}</h4>
+                <h4 v-else>{{ numberWithCommas(product.sale_price) }}</h4>
               </div>
-              <span>арт. {{ product[0].article }}</span>
+              <span>арт. {{ product.article }}</span>
             </div>
             <div class="detail__info-content">
-              <div v-if="product[0].available" class="detail_available">
+              <div v-if="product.available" class="detail_available">
                 <img src="@/assets/images/icons/check2.svg" alt="check">
                 <span>Товар есть в наличии</span>
               </div>
               <div v-else class="detail_available">
                 <span style="color: #ccc;">Товар нет в наличии</span>
               </div>
-              <p class="detail__desc">{{ product[0].decription }}</p>
+              <p class="detail__desc">{{ product.decription }}</p>
             </div>
             <div class="detail__counter">
               <button @click="count > 1 ? count-- : 1" class="minus">
@@ -58,9 +58,12 @@
                 <img src="@/assets/images/icons/plus.svg" alt="plus">
               </button>
             </div>
-            <template v-if="product[0].available">
-              <div @click="addToCart(product[0], count)" class="detail__toCartBtn">
-                <button class="btn detail__btn">Добавить в корзину</button>
+            <template v-if="product.available">
+              <div @click="addToCart(product, count)" class="detail__toCartBtn">
+                <button class="btn detail__btn">
+                  <span v-if="checkProductsInCart(product) || checkProductsIdInCart(product)">Уже в корзине</span>
+                  <span v-else>Добавить в корзину</span>
+                </button>
               </div>
             </template>
             <template v-else>
@@ -152,16 +155,13 @@ export default {
   },
   head() {
     return {
-      title: this.product[0].name
+      title: this.product.name
     }
   },
   asyncData ({ route }) {
-    return axios.get('https://back.zam-zam.kz/product/')
+    return axios.get('https://back.zam-zam.kz/product/' + route.params.id)
       .then(res => {
-        let product = res.data.results.filter(el => {
-          return el.id == route.params.id
-        })
-        return { product }
+        return { product: res.data }
       })
   },
   computed: {
@@ -193,6 +193,8 @@ export default {
   methods: {
     async addToCart(card, count) {
       card.count = count
+      card.total_price = card.price * count
+      card.sale_total_price = card.sale_price * count
       if(this.productsInCart.find(f => f.id == card.id) === undefined) {
         this.is_active = true;
         await this.$store.dispatch("product/addToCart", card)

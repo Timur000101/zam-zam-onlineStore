@@ -4,16 +4,29 @@
       <div class="footer__wrapper">
         <div class="footer__menu">
           <h4>Информация о магазине</h4>
-          <nuxt-link tag="div" to="/catalog" class="footer__menu-item">
-            Адрес и доставка
-          </nuxt-link>
-          <nuxt-link tag="div" to="/catalog" class="footer__menu-item">
-            Способ оплаты
-          </nuxt-link>
+          <div class="footer__menu-item">
+            <span>
+              <strong>Наш Адрес:</strong> 
+            </span>
+            <br> 
+            <span style="margin-top: 10px;">
+              г.Караганда, 45 квартал, Ержанова 3-А, 2 этаж
+            </span>
+          </div>
+          <div class="footer__menu-item">
+            <span>
+              <strong>Способ оплаты:</strong>
+            </span>
+            <br>
+            <div style="margin-top: 10px; display: flex; align-items: center;">
+              <img src="@/assets/images/icons/kaspi_logo.svg" alt="kaspi_logo">
+              <span style="margin-left: 10px">Kaspi.kz перевод</span>
+            </div>
+          </div>
         </div>
         <div class="footer__contacts">
           <h4>Наши контакты</h4>
-          <a href="tel:+77777777777">+7 (777) 777-77-77</a>
+          <a href="tel:+77073135656">+7 (707) 313-56-56</a>
         </div>
         <div class="footer__schedule">
           <h4>График работы</h4>
@@ -35,7 +48,7 @@
         <div class="footer__social">
           <h4>Мы в соцсетях</h4>
           <div class="footer__social-item">
-            <a href="https://instagram.com">
+            <a href="https://www.instagram.com/zamzam_krg/">
               <img src="@/assets/images/icons/instagram.svg" alt="">
             </a>
           </div>
@@ -77,6 +90,10 @@
     font-size: 16px;
     color: $white;
     cursor: pointer;
+    img {
+      width: 30px;
+      height: 30px;
+    }
   }
 }
 

@@ -192,6 +192,12 @@
     color: #1f1f1f;
     margin-top: 6px;
   }
+  &__sale {
+    text-decoration: line-through;
+    color: #ed4f00;
+    font-size: 12px;
+    margin-right: 5px;
+  }
 }
 
 @media screen and (max-width: 790px)  {

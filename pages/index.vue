@@ -79,34 +79,35 @@
               <swiper-slide 
                 v-for="item in newProducts" 
                 :key="item.id" 
-                class="newProducts__item"
                 @click="toDetailProduct(item.id)"
               >
-                <div v-if="item.sale != 0" class="newProducts__item-discount">
-                  <span class="discount-value">
-                    -{{ item.sale }}%
-                  </span>
-                </div>
-                <img :src="item.product_image[0].image" :alt="item.product_image[0]">
-                <div class="newProducts__item-content">
-                  <span>арт. {{ item.article }}</span>
-                  <h4>{{ item.name }}</h4>
-                </div>
-                <template v-if="item.sale != 0">
-                  <div class="newProducts__item-price">
-                    <h3>{{ $numberWithCommas(item.sale_price) }}</h3>
-                    <span>
-                      {{ $numberWithCommas(item.price) }}
+                <nuxt-link class="newProducts__item" :to="'/catalog/' + item.id">
+                  <div v-if="item.sale != 0" class="newProducts__item-discount">
+                    <span class="discount-value">
+                      -{{ item.sale }}%
                     </span>
                   </div>
-                </template>
-                <template v-else>
-                  <div class="newProducts__item-price">
-                    <h3>{{ $numberWithCommas(item.price) }}</h3>
+                  <img :src="item.product_image[0].image" :alt="item.product_image[0]">
+                  <div class="newProducts__item-content">
+                    <span>арт. {{ item.article }}</span>
+                    <h4>{{ item.name }}</h4>
                   </div>
-                </template>
-                <nuxt-link tag="button" :to="'/catalog/' + item.id" class="btn newProducts__button">
-                  Перейти
+                  <template v-if="item.sale != 0">
+                    <div class="newProducts__item-price">
+                      <h3>{{ $numberWithCommas(item.sale_price) }}</h3>
+                      <span>
+                        {{ $numberWithCommas(item.price) }}
+                      </span>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="newProducts__item-price">
+                      <h3>{{ $numberWithCommas(item.price) }}</h3>
+                    </div>
+                  </template>
+                  <button class="btn newProducts__button">
+                    Перейти
+                  </button>
                 </nuxt-link>
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
@@ -178,38 +179,85 @@
               <swiper-slide 
                 v-for="item in popularProducts"
                 :key="item.id"
-                class="popular__item"
               >
-                <div v-if="item.sale != 0" class="popular__item-discount">
-                  <span class="discount-value">
-                    -{{ item.sale }}%
-                  </span>
-                </div>
-                <img :src="item.product_image[0].image" :alt="item.product_image[0]">
-                <div class="popular__item-content">
-                  <span>арт. {{ item.article }}</span>
-                  <h4>{{ item.name }}</h4>
-                </div>
-                <template v-if="item.sale != 0">
-                  <div class="popular__item-price">
-                    <h3>{{ $numberWithCommas(item.sale_price) }}</h3>
-                    <span>
-                      {{ $numberWithCommas(item.price) }}
+                <nuxt-link class="popular__item" :to="'/catalog/' + item.id">
+                  <div v-if="item.sale != 0" class="popular__item-discount">
+                    <span class="discount-value">
+                      -{{ item.sale }}%
                     </span>
                   </div>
-                </template>
-                <template v-else>
-                  <div class="popular__item-price">
-                    <h3>{{ $numberWithCommas(item.price) }}</h3>
+                  <img :src="item.product_image[0].image" :alt="item.product_image[0]">
+                  <div class="popular__item-content">
+                    <span>арт. {{ item.article }}</span>
+                    <h4>{{ item.name }}</h4>
                   </div>
-                </template>
-                <nuxt-link tag="button" :to="'/catalog/' + item.id" class="btn popular__button">
-                  Перейти
+                  <template v-if="item.sale != 0">
+                    <div class="popular__item-price">
+                      <h3>{{ $numberWithCommas(item.sale_price) }}</h3>
+                      <span>
+                        {{ $numberWithCommas(item.price) }}
+                      </span>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="popular__item-price">
+                      <h3>{{ $numberWithCommas(item.price) }}</h3>
+                    </div>
+                  </template>
+                  <button class="btn popular__button">
+                    Перейти
+                  </button>
                 </nuxt-link>
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
               <div class="swiper-button-prev" slot="button-prev"></div>
               <div class="swiper-button-next" slot="button-next"></div>
+            </swiper>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reviews">
+      <div class="container">
+        <div class="reviews__wrapper">
+          <div class="section__title">
+            <h2>Отзывы покупателей</h2>
+          </div>
+          <div class="reviews__items">
+            <swiper ref="mySwiperReviews" :options="swiperOptionsReviews">
+              <swiper-slide class="reviews__item">
+                <p>Спасибо замзам только у вас заказываю игрушки всегда целые и рабочие игрушки 
+                  👍🏽 детям радость и мы довольны
+                </p>
+                <h4>Алена</h4>
+              </swiper-slide>
+              <swiper-slide class="reviews__item">
+                <p>замзам спасибо! Дом большой и шикарный гирлянда в комплекте нас очень порадовала! 
+                  Подарили на день рождения, спустя полтора месяца ещё играем каждый день
+                </p>
+                <h4>Ляззат</h4>
+              </swiper-slide>
+              <swiper-slide class="reviews__item">
+                <p>Спасибо за быструю доставку и за возможность не ездить по магазинам! 
+                  Хорошие качественные игрушки на любой возраст
+                </p>
+                <h4>Света</h4>
+              </swiper-slide>
+              <swiper-slide class="reviews__item">
+                <p>здравствуйте большое спасибо сын очень 
+                  рад новым игрушкам😊 просто восторге! 
+                  Качество отличное доставка быстрая ставлю пять 🖐 звёзд 
+                </p>
+                <h4>Карина</h4>
+              </swiper-slide>
+              <swiper-slide class="reviews__item">
+                <p>Спасибо замзам за шикарные игрушки за ассортимент. 
+                  Качественные игрушки за приемлемую стоимость и 
+                  доставка быстрая
+                </p>
+                <h4>Верусик</h4>
+              </swiper-slide>
             </swiper>
           </div>
         </div>
@@ -287,6 +335,32 @@ export default {
             spaceBetween: 10
           }
         }
+      },
+      swiperOptionsReviews: {
+        loop: true,
+        pagination: {
+          el: '.swiper-pagination'
+        },
+        slidesPerView: 3,
+        spaceBetween: 30,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 20
+          },
+          540: {
+            slidesPerView: 2,
+            spaceBetween: 20
+          },
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 10
+          }
+        }
       }
     }
   },
@@ -299,6 +373,9 @@ export default {
     },
     swiperPopular() {
       return this.$refs.mySwiperPopular.$swiper
+    },
+    swiperReviews() {
+      return this.$refs.mySwiperReviews.$swiper
     },
     newProducts() {
       return this.$store.getters["product/newProducts"]
@@ -316,9 +393,10 @@ export default {
     this.$store.dispatch("product/fetchPopularProducts")
   },
   methods: {
-    toDetailProduct(id) {
-      this.$router.push(`/catalog/${id}`)
-    }
+    // toDetailProduct(id) {
+    //   console.log(id);
+    //   this.$router.push(`/catalog/${id}`)
+    // }
   }
 }
 </script>

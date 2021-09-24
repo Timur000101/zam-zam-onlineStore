@@ -147,7 +147,7 @@
                       class="btn catalog-btn"
                     >
                       <span v-if="checkProductsInCart(item) || checkProductsIdInCart(item)">Уже в корзине</span>
-                      <span v-else>В корзину</span>
+                      <span v-else>Посмотреть</span>
                     </button>
                     <button
                       v-else
@@ -160,11 +160,11 @@
                 </div>
               </div>
             </div>
-            <div class="pagination-section">
+            <div v-if="products.next" class="pagination-section">
               <paginate
                 v-model="page"
-                :click-handler="pageChange"
-                :page-count="20"
+                :click-handler="clickCallback"
+                :page-count="Math.ceil(products.count / 3)"
                 :prev-text="'<'"
                 :next-text="'>'"
                 :page-range="2"
@@ -286,6 +286,7 @@ export default {
         brand: this.$route.query.brand ? (this.$route.query.brand).split(',') : '',
         age: this.$route.query.age ? (this.$route.query.age).split(',') : '',
         gender: this.$route.query.gender ? this.$route.query.gender : '',
+        page: this.$route.query.page ? this.$route.query.page : 1
       },
       sortTypes: [
         { id: 1, value: 'sortByPriceUp', text: 'По росту цены' },
@@ -375,15 +376,7 @@ export default {
   },
   methods: {
     async addToCart(card) {
-      if(this.productsInCart.find(f => f.id == card.id) === undefined) {
-        await this.$store.dispatch("product/addToCart", card)
-        await this.$store.dispatch("product/fetchPopulation", card.id)
-      } else {
-        await this.$store.dispatch("product/deleteFromCart", card)
-        this.productsInCartId = this.productsInCartId.filter(
-          (c) => c != card.id
-        );
-      }
+      this.$router.push('catalog/' + card.id)
     },
     showMobileFilterMethod() {
       this.showMobileFilter = !this.showMobileFilter;
@@ -411,6 +404,9 @@ export default {
     },
     pageChange(el) {
       console.log(el);
+    },
+    clickCallback (pageNum) {
+      this.queryParams.page = pageNum
     }
   }
 }
