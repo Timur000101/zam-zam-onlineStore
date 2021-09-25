@@ -159,8 +159,13 @@
                   </div>
                 </div>
               </div>
+
+              <div v-if="products.results.length == 0" class="empty_section">
+                <img src="@/assets/images/icons/empty.svg" alt="epmty">
+                <h4>К сожелению таких игрушек нет на складе из-за неожиданно большого спроса</h4>
+              </div>
             </div>
-            <div v-if="products.next" class="pagination-section">
+            <div v-if="products.results" class="pagination-section">
               <paginate
                 v-model="page"
                 :click-handler="clickCallback"
@@ -407,6 +412,10 @@ export default {
     },
     clickCallback (pageNum) {
       this.queryParams.page = pageNum
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     }
   }
 }

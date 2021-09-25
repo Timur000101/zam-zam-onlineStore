@@ -89,6 +89,7 @@ export default {
       color: rgb(64, 64, 223);
       font-weight: 500;
       display: inline-block;
+      text-decoration: underline;
     }
   }
   h4 {

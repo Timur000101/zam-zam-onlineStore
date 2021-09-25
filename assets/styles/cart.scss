@@ -43,6 +43,9 @@
   right: 0;
   width: 100vmax;
   z-index: 999;
+  &__main {
+    padding-bottom: 30px;
+  }
   &__overlay {
     min-width: 100vmax;
     min-height: 100vmax;

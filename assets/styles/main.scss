@@ -1013,3 +1013,30 @@ button {cursor: pointer; border: none;}
     text-align: center;
   }
 }
+
+
+// Main section
+
+.empty_section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  position: relative;
+  h4 {
+    position: absolute;
+    bottom: -30px;
+    font-size: 24px;
+    text-align: center;
+  }
+}
+
+
+@media (max-width: 926px) {
+  .empty_section {
+    h4 {
+      font-size: 18px;
+    }
+  }
+}

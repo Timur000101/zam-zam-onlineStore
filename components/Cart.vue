@@ -168,7 +168,7 @@
                       </div>
                       <input
                         placeholder="Телефон" 
-                        type="text"
+                        type="tel"
                         v-model="$v.form.phone.$model"
                         class="form--input"
                         :class="{ 'form-group--error': $v.form.phone.$error }"
@@ -195,7 +195,7 @@
                     <div id="entrance" class="form--group">
                       <input
                         placeholder="Подъезд" 
-                        type="text"
+                        type="number"
                         v-model="$v.form.entrance.$model"
                         class="form--input"
                         :class="{ 'form-group--error': $v.form.entrance.$error }"
@@ -207,7 +207,7 @@
                     <div id="floor" class="form--group">
                       <input
                         placeholder="Этаж" 
-                        type="text"
+                        type="number"
                         v-model="$v.form.floor.$model"
                         class="form--input"
                         :class="{ 'form-group--error': $v.form.floor.$error }"
@@ -220,7 +220,7 @@
                     <div id="intercom" class="form--group">
                       <input
                         placeholder="Домофон" 
-                        type="text"
+                        type="number"
                         v-model="$v.form.intercom.$model"
                         class="form--input"
                         :class="{ 'form-group--error': $v.form.intercom.$error }"
@@ -256,7 +256,7 @@
                       </div>
                       <input
                         placeholder="Телефон" 
-                        type="text"
+                        type="tel"
                         v-model="$v.form2.phone.$model"
                         class="form--input"
                         :class="{ 'form-group--error': $v.form2.phone.$error }"
