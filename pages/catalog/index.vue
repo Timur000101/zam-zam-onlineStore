@@ -5,6 +5,10 @@
         <Breadcrumbs :crumbs="breadcrumbs" :currentPage="'Каталог'" />
         <div class="catalog__title">
           <h1 class="section-title">Каталог</h1>
+          <div class="catalog__search">
+            <input v-model="search" placeholder="Поиск ..." type="text">
+            <img src="@/assets/images/icons/search.svg" alt="search">
+          </div>
         </div>
         <div class="catalog__content">
           <div class="catalog__header">
@@ -159,11 +163,6 @@
                   </div>
                 </div>
               </div>
-
-              <div v-if="products.results.length == 0" class="empty_section">
-                <img src="@/assets/images/icons/empty.svg" alt="epmty">
-                <h4>К сожелению таких игрушек нет на складе из-за неожиданно большого спроса</h4>
-              </div>
             </div>
             <div v-if="products.results" class="pagination-section">
               <paginate
@@ -180,6 +179,11 @@
                 :next-class="'next-item'"
               >
               </paginate>
+            </div>
+          </div>
+          <div v-if="products.results" class="empty_section">
+            <div v-if="products.results.length === 0">
+              <h4>К сожалению, на ваш поисковый запрос ничего не найдено.</h4>
             </div>
           </div>
         </div>
@@ -291,7 +295,8 @@ export default {
         brand: this.$route.query.brand ? (this.$route.query.brand).split(',') : '',
         age: this.$route.query.age ? (this.$route.query.age).split(',') : '',
         gender: this.$route.query.gender ? this.$route.query.gender : '',
-        page: this.$route.query.page ? this.$route.query.page : 1
+        page: this.$route.query.page ? this.$route.query.page : 1,
+        search: this.$route.query.search ? this.$route.query.search : ''
       },
       sortTypes: [
         { id: 1, value: 'sortByPriceUp', text: 'По росту цены' },
@@ -316,7 +321,8 @@ export default {
         { name: 'Главная', url: '/' }
       ],
       sorteType: '',
-      showMobileFilter: false
+      showMobileFilter: false,
+      search: this.$route.query.search ? this.$route.query.search : '',
     }
   },
   watch: {
@@ -354,6 +360,12 @@ export default {
     },
     genderType: function(el) {
       this.queryParams.gender = el
+    },
+    search: function(el) {
+      setTimeout(() => {
+        this.queryParams.search = el
+        // this.getSearchData()
+      }, 1000)
     }
 
   },
@@ -380,6 +392,9 @@ export default {
     }
   },
   methods: {
+    getSearchData() {
+      this.$store.dispatch("product/fetchProducts", { search: this.search });
+    },
     async addToCart(card) {
       this.$router.push('catalog/' + card.id)
     },
