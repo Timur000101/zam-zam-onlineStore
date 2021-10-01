@@ -6,7 +6,7 @@
         <div class="catalog__title">
           <h1 class="section-title">Каталог</h1>
           <div class="catalog__search">
-            <input v-model="search" placeholder="Поиск ..." type="text">
+            <input v-model="search" placeholder="Поиск ..." type="search">
             <img src="@/assets/images/icons/search.svg" alt="search">
           </div>
         </div>
