@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loader v-if="loader" />
     <section class="section main-section">
       <div class="container">
         <div class="main__wrapper">
@@ -111,8 +112,6 @@
                 </nuxt-link>
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
-              <div class="swiper-button-prev" slot="button-prev"></div>
-              <div class="swiper-button-next" slot="button-next"></div>
             </swiper>
           </div>
         </div>
@@ -210,8 +209,6 @@
                 </nuxt-link>
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
-              <div class="swiper-button-prev" slot="button-prev"></div>
-              <div class="swiper-button-next" slot="button-next"></div>
             </swiper>
           </div>
         </div>
@@ -268,8 +265,12 @@
 
 <script>
 export default {
+  components: {
+    Loader: () => import('@/components/Loader.vue')
+  },
   data() {
     return {
+      loader: false,
       swiperOptions: {
         loop: true,
         autoplay: {
@@ -289,12 +290,12 @@ export default {
         pagination: {
           el: '.swiper-pagination'
         },
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
+        },
         slidesPerView: 3,
         spaceBetween: 30,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        },
         breakpoints: {
           768: {
             slidesPerView: 3,
@@ -315,12 +316,12 @@ export default {
         pagination: {
           el: '.swiper-pagination'
         },
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
+        },
         slidesPerView: 3,
         spaceBetween: 30,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        },
         breakpoints: {
           768: {
             slidesPerView: 3,
@@ -341,12 +342,12 @@ export default {
         pagination: {
           el: '.swiper-pagination'
         },
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
+        },
         slidesPerView: 3,
         spaceBetween: 30,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        },
         breakpoints: {
           768: {
             slidesPerView: 3,
@@ -388,15 +389,13 @@ export default {
     },
   },
   mounted() {
+    this.loader = true
     this.$store.dispatch("product/fetchCategories");
     this.$store.dispatch("product/fetchNewProducts");
     this.$store.dispatch("product/fetchPopularProducts")
+    setTimeout(() => {
+      this.loader = false
+    }, 1500)
   },
-  methods: {
-    // toDetailProduct(id) {
-    //   console.log(id);
-    //   this.$router.push(`/catalog/${id}`)
-    // }
-  }
 }
 </script>

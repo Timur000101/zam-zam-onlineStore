@@ -1,14 +1,15 @@
 <template>
   <section class="section catalog">
+    <Loader v-if="loader" />
     <div class="container">
       <div class="catalog__wrapper">
         <Breadcrumbs :crumbs="breadcrumbs" :currentPage="'Каталог'" />
         <div class="catalog__title">
           <h1 class="section-title">Каталог</h1>
-          <div class="catalog__search">
-            <input v-model="search" placeholder="Поиск ..." type="search">
-            <img src="@/assets/images/icons/search.svg" alt="search">
-          </div>
+            <form class="catalog__search">
+              <input v-model="search" placeholder="Поиск ..." type="search">
+              <img src="@/assets/images/icons/search.svg" alt="search">
+            </form>
         </div>
         <div class="catalog__content">
           <div class="catalog__header">
@@ -121,7 +122,6 @@
               </div>
             </div>
           </div>
-
           <div class="catalog__items">
             <div class="catalog__items-wrapper">
               <div v-for="(item, index) in products.results" :key="index" class="catalog__item">
@@ -132,7 +132,7 @@
                     </span>
                   </div>
                   <div class="catalog__item-image" @click="toDetailToy(item.id)">
-                    <img :src="item.product_image[0].image" alt="">
+                    <img :src="item.product_image[0].image" :alt="item.name">
                   </div>
                   <div class="catalog__item-content">
                     <div class="catalog__item-title" @click="toDetailToy(item.id)">
@@ -278,13 +278,16 @@
 </template>
 
 <script>
+import Loader from '@/components/Loader.vue';
 export default {
   components: {
-    Breadcrumbs: () => import('@/components/Breadcrumbs.vue')
+    Breadcrumbs: () => import('@/components/Breadcrumbs.vue'),
+    Loader: () => import('@/components/Loader.vue')
   },
   data() {
     return {
       page: 1,
+      loader: false,
       checkedCategories: this.$route.query.category ? (this.$route.query.category).split(',') : [],
       checkedBrands: this.$route.query.brand ? (this.$route.query.brand).split(',') : [],
       checkedAge: this.$route.query.age ? (this.$route.query.age).split(',') : [],
@@ -384,9 +387,13 @@ export default {
     },
   },
   mounted() {
+    this.loader = true
     this.$store.dispatch("product/fetchCategories");
     this.$store.dispatch("product/fetchBrands");
-    this.$store.dispatch("product/fetchProducts", this.$route.query);
+    this.$store.dispatch("product/fetchProducts", this.$route.query)
+    setTimeout(() => {
+      this.loader = false
+    }, 1500)
     if (this.productsInCart.length) {
       this.productsInCart.forEach((c) => this.productsInCartId.push(c.id));
     }

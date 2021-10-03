@@ -1,5 +1,6 @@
 <template>
   <section class="section detail">
+    <Loader v-if="loader" />
     <div class="container">
       <div class="detail__wrapper">
         <Breadcrumbs :crumbs="breadcrumbs" :currentPage="product.name"/>
@@ -116,11 +117,13 @@ import axios from "axios"
 export default {
   components: {
     Breadcrumbs: () => import('@/components/Breadcrumbs.vue'),
-    Toast: () => import('@/components/Toast.vue')
+    Toast: () => import('@/components/Toast.vue'),
+    Loader: () => import('@/components/Loader.vue'),
   },
   data() {
     return {
       count: 1,
+      loader: false,
       is_active: false,
       productsInCartId: [],
       similarProducts: [],
@@ -170,6 +173,10 @@ export default {
     },
   },
   mounted() {
+    this.loader = true
+    setTimeout(() => {
+      this.loader = false
+    }, 1000)
     axios.post('https://back.zam-zam.kz/product/similar/', {
       id: this.$route.params.id
     })
