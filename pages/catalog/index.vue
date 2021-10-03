@@ -11,6 +11,9 @@
               <img src="@/assets/images/icons/search.svg" alt="search">
             </div>
         </div>
+        <div v-if="searchRes" class="search-res">
+          <span>Результат по запросу "{{ search }}"</span>
+        </div>
         <div class="catalog__content">
           <div class="catalog__header">
             <select v-model="sorteType" class="form--select sort--select">
@@ -288,6 +291,7 @@ export default {
     return {
       page: 1,
       loader: false,
+      searchRes: false,
       checkedCategories: this.$route.query.category ? (this.$route.query.category).split(',') : [],
       checkedBrands: this.$route.query.brand ? (this.$route.query.brand).split(',') : [],
       checkedAge: this.$route.query.age ? (this.$route.query.age).split(',') : [],
@@ -434,6 +438,7 @@ export default {
     },
     onSearch() {
       this.queryParams.search = this.search
+      this.searchRes = true
     }
   }
 }

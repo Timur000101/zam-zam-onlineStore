@@ -1085,3 +1085,14 @@ button {cursor: pointer; border: none;}
     margin-left: 10px;
   }
 }
+
+.search-res {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+  span {
+    color: #b9b8b8;
+  }
+}
