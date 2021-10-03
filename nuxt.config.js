@@ -52,12 +52,14 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
-    '@nuxtjs/yandex-metrika',
+    [
+      '@nuxtjs/yandex-metrika',
+      {
+        id: '85731514',
+        webvisor: true,
+      }
+    ]
   ],
-  yandexMetrika: {
-    id: '85731514',
-    webvisor: true,
-  },
 
   vue: {
     config: {
