@@ -6,7 +6,7 @@
         <Breadcrumbs :crumbs="breadcrumbs" :currentPage="'Каталог'" />
         <div class="catalog__title">
           <h1 class="section-title">Каталог</h1>
-            <form class="catalog__search">
+            <form @submit.prevent="onSearch" class="catalog__search">
               <input v-model="search" placeholder="Поиск ..." type="search">
               <img src="@/assets/images/icons/search.svg" alt="search">
             </form>
@@ -364,13 +364,6 @@ export default {
     genderType: function(el) {
       this.queryParams.gender = el
     },
-    search: function(el) {
-      setTimeout(() => {
-        this.queryParams.search = el
-        // this.getSearchData()
-      }, 1000)
-    }
-
   },
   computed: {
     categories() {
@@ -438,6 +431,9 @@ export default {
         top: 0,
         behavior: 'smooth'
       })
+    },
+    onSearch() {
+      this.queryParams.search = this.search
     }
   }
 }
