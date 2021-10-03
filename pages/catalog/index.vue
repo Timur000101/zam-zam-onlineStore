@@ -6,10 +6,10 @@
         <Breadcrumbs :crumbs="breadcrumbs" :currentPage="'Каталог'" />
         <div class="catalog__title">
           <h1 class="section-title">Каталог</h1>
-            <form @submit.prevent="onSearch" class="catalog__search">
-              <input v-model="search" placeholder="Поиск ..." type="search">
+            <div class="catalog__search">
+              <input @keyup.enter="onSearch" v-model="search" placeholder="Поиск ..." type="search">
               <img src="@/assets/images/icons/search.svg" alt="search">
-            </form>
+            </div>
         </div>
         <div class="catalog__content">
           <div class="catalog__header">
