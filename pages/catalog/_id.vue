@@ -59,7 +59,7 @@
                 <img src="@/assets/images/icons/plus.svg" alt="plus">
               </button>
             </div>
-            <div class="detail__link">
+            <div v-if="product.link" class="detail__link">
               <a :href="product.link">Посмотреть видеоролик</a>
             </div>
             <template v-if="product.available">
