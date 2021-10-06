@@ -171,7 +171,7 @@
               <paginate
                 v-model="page"
                 :click-handler="clickCallback"
-                :page-count="Math.ceil(products.count / 3)"
+                :page-count="Math.ceil(products.count / 12)"
                 :prev-text="'<'"
                 :next-text="'>'"
                 :page-range="2"

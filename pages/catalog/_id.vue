@@ -59,6 +59,9 @@
                 <img src="@/assets/images/icons/plus.svg" alt="plus">
               </button>
             </div>
+            <div class="detail__link">
+              <a :href="product.link">Посмотреть видеоролик</a>
+            </div>
             <template v-if="product.available">
               <div @click="addToCart(product, count)" class="detail__toCartBtn">
                 <button class="btn detail__btn">

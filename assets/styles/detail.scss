@@ -4,6 +4,19 @@
   margin-top: 30px;
 }
 
+.detail__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  a {
+    color: #1f96f4;
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+}
+
 .detail__slider {
   display: flex;
   flex-direction: column;
@@ -133,9 +146,12 @@
   }
 }
 
+.detail__toCartBtn {
+  margin-top: 20px;
+}
+
 .detail__btn {
   width: 100%;
-  margin-top: 30px;
 }
 
 .detail__similar {
